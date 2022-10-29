@@ -55,7 +55,7 @@ const createMessage = (req, res) => {
 };
 
 const deletMessage = (req, res) => {
-  const id = req.params.conversation_id;
+  const id = req.params.message_id;
   messageControllers
     .deletMessage(id)
     .then((data) => {
