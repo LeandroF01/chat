@@ -5,7 +5,7 @@ const conversationsServices = require("../services/conversations.services");
 require("../../middlewares/auth.middleware")(passport);
 
 router
-  .route("/conversation")
+  .route("/")
   .get(
     passport.authenticate("jwt", { session: false }),
     conversationsServices.getAllConcersation

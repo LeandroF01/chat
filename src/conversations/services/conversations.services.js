@@ -46,11 +46,14 @@ const updateConversationByID = (req, res) => {
 const createConversation = (req, res) => {
   const { title, imageUrl } = req.body;
 
+  const createdBy = req.user.id;
+
   if (title && imageUrl) {
     conversationsControllers
       .createConversation({
         title,
         imageUrl,
+        createdBy,
       })
       .then((data) => {
         res.status(201).json(data);

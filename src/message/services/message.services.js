@@ -1,7 +1,7 @@
-const conversationsMessage = require("../controllers/message.controllers");
+const messageControllers = require("../controllers/message.controllers");
 
 const getAllMessage = (req, res) => {
-  conversationsMessage
+  messageControllers
     .getAllMessage()
     .then((response) => {
       res.status(200).json(response);
@@ -12,8 +12,8 @@ const getAllMessage = (req, res) => {
 };
 
 const getMessageByID = (req, res) => {
-  const id = req.params.id;
-  conversationsMessage
+  const id = req.params.message_id;
+  messageControllers
     .getMessageByID(id)
     .then((data) => {
       res.status(200).json(data);
@@ -26,9 +26,14 @@ const getMessageByID = (req, res) => {
 const createMessage = (req, res) => {
   const { message } = req.body;
 
-  if (message) {
-    conversationsMessage
+  const senderId = req.user.id;
+  const conversationId = req.params.conversation_id;
+
+  if (message && conversationId) {
+    messageControllers
       .createMessage({
+        senderId,
+        conversationId,
         message,
       })
       .then((data) => {
@@ -41,6 +46,8 @@ const createMessage = (req, res) => {
     res.status(400).json({
       message: "All fields must be completed",
       fields: {
+        senderId: "uuid",
+        conversationId: "uuid",
         message: "string",
       },
     });
@@ -48,8 +55,8 @@ const createMessage = (req, res) => {
 };
 
 const deletMessage = (req, res) => {
-  const id = req.params.id;
-  conversationsMessage
+  const id = req.params.conversation_id;
+  messageControllers
     .deletMessage(id)
     .then((data) => {
       if (data) {
